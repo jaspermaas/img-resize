@@ -1,0 +1,42 @@
+:root {
+  /* Dark theme tokens */
+  --color-accent: #6366f1;
+  --color-accent-muted: #6366f133;
+  --color-text: #e2e8f0;
+  --color-muted: #94a3b8;
+  --color-surface: #1e293b;
+  --color-surface-hover: #273549;
+  --color-border: #334155;
+  --color-bg: #0f172a;
+
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100dvh;
+}
+
+#root {
+  width: 100%;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
