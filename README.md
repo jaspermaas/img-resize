@@ -1,30 +1,16 @@
-﻿#  Rapid Pic Resize
+﻿#  img-resize: client-side batch image resizer
 
-Browser-basiertes Tool zum Batch-Resizing von Bildern auf Mindestauflösung 19201080 px (Querformat) bzw. 10801920 px (Hochformat)  ohne Server, ohne Upload.
+A simple web application that allows users to resize multiple images on the client side. It supports various image formats and provides an easy-to-use interface for batch processing.
 
-## Funktionsweise
+Deployed using GitHub Pages ([here](https://dev.jaspermaas.de/img-resize/)).
 
-- Bilder per Drag & Drop oder Datei-Dialog hinzufügen (JPEG, PNG, WebP, AVIF, BMP, GIF )
-- Querformat-Bilder werden auf mindestens **19201080 px** skaliert, Hochformat auf mindestens **10801920 px** (Cover-Modus: beide Achsen erreichen das Minimum)
-- Bilder, die die Mindestauflösung nicht erfüllen, werden **übersprungen** und visuell markiert
-- Alle verarbeiteten Bilder als **ZIP-Datei** herunterladen
-- Alles läuft **lokal im Browser**  keine Daten verlassen den Computer
+## Features
+- Batch image resizing
+- Support for multiple image formats (JPEG, PNG, GIF, etc.)
+- Fully client-side processing (no server required)
+- Export resized images in a ZIP file
 
-## Entwicklung
-
-```bash
-npm install
-npm run dev
-```
-
-## Build
-
-```bash
-npm run build
-```
-
-## Stack
-
-- [Vite](https://vitejs.dev/) + [React](https://react.dev/) + TypeScript
-- [JSZip](https://stuk.github.io/jszip/) für die ZIP-Erstellung
-- HTML5 Canvas API für die clientseitige Bildverarbeitung
+## Technologies Used
+- ReactJS, Vite, Typescript
+- JSZip for creating ZIP files
+- GitHub Pages for deployment
