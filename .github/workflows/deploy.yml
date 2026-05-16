@@ -40,7 +40,7 @@ jobs:
         run: pnpm ci
 
       - name: Audit Fix
-        run: pnpm audit fix
+        run: pnpm audit --fix override
 
       - name: Build
         run: pnpm run build
