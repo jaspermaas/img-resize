@@ -1,7 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
 import JSZip from 'jszip'
 import { resizeAndEncode, ImageTooSmallError } from './imageProcessor'
-import './App.css'
 
 interface ImageResult {
   id: number
@@ -18,7 +17,6 @@ let idCounter = 0
 
 export default function App() {
   const [results, setResults] = useState<ImageResult[]>([])
-  const [isDragging, setIsDragging] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [isZipping, setIsZipping] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -83,7 +81,6 @@ export default function App() {
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault()
-      setIsDragging(false)
       processFiles(e.dataTransfer.files)
     },
     [processFiles]
@@ -117,44 +114,42 @@ export default function App() {
   const totalCount = results.length
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>⚡ Rapid Pic Resize</h1>
-        <p className="app-subtitle">
-          Bilder auf max. 1920&times;1080 skalieren &amp; als ZIP herunterladen
+    <div className="bg-bg min-h-100vh flex flex-col gap-8 pt-8 px-4 pb-16 max-w-215 my-0 mx-auto">
+      <header className="text-center">
+        <h1 className="text-4xl font-extrabold tracking-tight mb-1">⚡ Rapid Pic Resize</h1>
+        <p className="text-muted text m-0">
+          Bilder auf 1920&times;1080 skalieren &amp; als ZIP herunterladen
         </p>
       </header>
 
-      <main className="app-main">
-        <section className="info-section">
-          <h2 className="info-title">So funktioniert's</h2>
-          <ul className="info-list">
-            <li>
-              <span className="info-icon">📁</span>
-              <span>Bilder per Drag&nbsp;&amp;&nbsp;Drop oder Klick hochladen – auch mehrere gleichzeitig (JPEG, PNG, WebP, AVIF&nbsp;…)</span>
+      <main>
+        <section className="py-1 px-0">
+          <h2 className="text-[0.9rem] font-bold uppercase tracking-wider text-muted mb-3.5">So funktioniert's</h2>
+          <ul className="list-none p-0 m-0 flex flex-col gap-2">
+            <li className="flex items-start gap-2 text-sm leading-normal text-muted">
+              <span className="shrink-0 w-6 text-center mt-0.5">📁</span>
+              <span>Bilder per Drag&nbsp;&amp;&nbsp;Drop oder Klick hochladen - auch mehrere gleichzeitig (JPEG, PNG, WebP, AVIF&nbsp;…)</span>
             </li>
-            <li>
-              <span className="info-icon">📐</span>
+            <li className="flex items-start gap-2 text-sm leading-normal text-muted">
+              <span className="shrink-0 w-6 text-center mt-0.5">📐</span>
               <span>Querformat-Bilder werden auf mindestens&nbsp;<strong>1920&times;1080&nbsp;px</strong> skaliert, Hochformat auf mindestens&nbsp;<strong>1080&times;1920&nbsp;px</strong> – ohne Hochskalierung kleiner Bilder</span>
             </li>
-            <li>
-              <span className="info-icon">⚠️</span>
+            <li className="flex items-start gap-2 text-sm leading-normal text-muted">
+              <span className="shrink-0 w-6 text-center mt-0.5">⚠️</span>
               <span>Bilder, die die Mindestauflösung nicht erfüllen, werden <strong>übersprungen</strong> und nicht in die ZIP aufgenommen</span>
             </li>
-            <li>
-              <span className="info-icon">⬇️</span>
-              <span>Alle verarbeiteten Bilder als einzelne <strong>ZIP-Datei</strong> herunterladen – alles läuft lokal im Browser, keine Daten verlassen deinen Computer</span>
+            <li className="flex items-start gap-2 text-sm leading-normal text-muted">
+              <span className="shrink-0 w-6 text-center mt-0.5">⬇️</span>
+              <span>Alle verarbeiteten Bilder als einzelne <strong>ZIP-Datei</strong> herunterladen - alles läuft lokal im Browser, keine Daten verlassen deinen Computer</span>
             </li>
           </ul>
         </section>
 
         <div
-          className={`drop-zone${isDragging ? ' drop-zone--dragging' : ''}`}
+          className="border-2 cursor-pointer rounded-2xl py-12 px-8 text-center hover:outline-none ransition-border-color transition-background duration-200 select-none border-dashed border-border bg-surface hover:bg-surface-hover hover:border-accent"
           onDragOver={(e) => {
             e.preventDefault()
-            setIsDragging(true)
           }}
-          onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
           role="button"
@@ -167,40 +162,40 @@ export default function App() {
             type="file"
             multiple
             accept="image/*"
-            className="visually-hidden"
+            className="absolute w-0 h-0 opacity-0 overflow-hidden whitespace-nowrap"
             onChange={(e) => {
               if (e.target.files) processFiles(e.target.files)
               e.target.value = ''
             }}
           />
-          <div className="drop-zone__icon">🖼️</div>
-          <p className="drop-zone__text">
+          <div className="text-5xl leading-none mb-3">🖼️</div>
+          <p className="text-lg leading-none mb-1.5">
             Bilder hier ablegen oder{' '}
-            <span className="drop-zone__link">klicken zum Auswählen</span>
+            <span className="text-accent underline">klicken zum Auswählen</span>
           </p>
-          <p className="drop-zone__hint">
+          <p className="text-sm text-muted m-0">
             SVG · PNG · JPEG · WebP · AVIF · BMP · GIF und weitere
           </p>
         </div>
 
         {totalCount > 0 && (
-          <section className="results-section">
-            <div className="results-toolbar">
-              <span className="results-count">
+          <section className="flex flex-col gap-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <span className="font-semibold flex items-center gap-2">
                 {doneCount}/{totalCount} Bilder verarbeitet
                 {skippedCount > 0 && (
-                  <span className="skipped-badge">
+                  <span className="text-xs text-orange-500 font-semibold bg-orange-950 border border-orange-900 rounded-4xl py-0.5 px-2">
                     {skippedCount} zu klein
                   </span>
                 )}
                 {isProcessing && (
-                  <span className="spinner" aria-label="Verarbeite…" />
+                  <span className="inline-block w-4 h-4 border-2 border-border border-t-accent rounded-[50%] animate-spin" aria-label="Verarbeite…" />
                 )}
               </span>
-              <div className="results-actions">
+              <div className="flex gap-2 flex-wrap">
                 {doneCount > 0 && (
                   <button
-                    className="btn btn--primary"
+                    className="text-white bg-accent"
                     onClick={handleDownloadZip}
                     disabled={isZipping || isProcessing}
                   >
@@ -210,7 +205,7 @@ export default function App() {
                   </button>
                 )}
                 <button
-                  className="btn btn--secondary"
+                  className="text-text bg-surface border border-border"
                   onClick={handleClear}
                   disabled={isProcessing}
                 >
@@ -219,30 +214,30 @@ export default function App() {
               </div>
             </div>
 
-            <ul className="file-list">
-              {results.map((r) => (
-                <li key={r.id} className={`file-item file-item--${r.status}`}>
-                  <span className="file-item__icon">
+            <ul className="list-none p-0 m-0 flex flex-col gap-2">
+              {results.map((r) => (                
+                <li key={r.id} className={`flex items-center gap-2 py-2 px-4 rounded-xl bg-surface border border-border text-sm transition-border-color duration-150 ${r.status === 'error' ? 'border-red-500' : r.status === 'skipped' ? 'border-orange-500' : r.status === 'done' ? 'border-green-500' : 'border-muted'}`}>
+                  <span className="shrink-0">
                     {r.status === 'pending' && '⏳'}
                     {r.status === 'processing' && '⚙️'}
                     {r.status === 'done' && '✅'}
                     {r.status === 'error' && '❌'}
                     {r.status === 'skipped' && '⚠️'}
                   </span>
-                  <span className="file-item__name" title={r.outputName}>
+                  <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap" title={r.outputName}>
                     {r.originalName}
                   </span>
-                  <span className="file-item__sizes">
-                    <span className="size-original">
+                  <span className="shrink-0 flex items-center gap-1 text-muted text-sm">
+                    <span>
                       {(r.originalSize / 1024 / 1024).toFixed(2)} MB
                     </span>
                     {r.outputSize !== undefined && (
-                      <span className="size-output">
+                      <span className="text-green-500 font-semibold">
                         → {(r.outputSize / 1024 / 1024).toFixed(2)} MB
                       </span>
                     )}
                     {r.error && (
-                      <span className={r.status === 'skipped' ? 'file-item__skipped' : 'file-item__error'}>
+                      <span className={r.status === 'skipped' ? 'text-orange-500 font-medium' : 'text-red-700'}>
                         {r.error}
                       </span>
                     )}
