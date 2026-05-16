@@ -18,30 +18,38 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [24]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name : Setup pnpm
+        uses: pnpm/action-setup@v6
         with:
-          node-version: '20'
-          cache: 'npm'
+          version: 11
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm ci
 
       - name: Audit Fix
-        run: npm audit fix
+        run: pnpm audit fix
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v6
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
@@ -54,4 +62,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
