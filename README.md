@@ -11,6 +11,6 @@ Deployed using GitHub Pages ([here](https://dev.jaspermaas.de/img-resize/)).
 - Export resized images in a ZIP file
 
 ## Technologies Used
-- ReactJS, Vite, Typescript
+- ReactJS, Vite, Typescript, TailwindCSS
 - JSZip for creating ZIP files
 - GitHub Pages for deployment
